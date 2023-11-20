@@ -14,4 +14,4 @@ RUN pip install --no-cache-dir -r requirements.txt
 EXPOSE 8501
 
 # Run streamlit when the container launches
-CMD ["streamlit", "run", "TNT Shipment Tracker App"]
+CMD ["streamlit", "run", "TNT_Shipment_Tracker_App.py"]
