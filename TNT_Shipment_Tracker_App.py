@@ -195,6 +195,12 @@ def process_excel_file(uploaded_file):
         key="download_button"
     )
 
+# Define a main function
+def main():
+    uploaded_file = st.file_uploader("Upload Excel File", type=["xlsx"])
+    if uploaded_file is not None:
+        process_excel_file(uploaded_file)
+
 # Check if the script is being run as the main module
 if __name__ == "__main__":
     main()
