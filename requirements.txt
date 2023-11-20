@@ -3,4 +3,5 @@ selenium==3.141.0
 beautifulsoup4==4.10.0
 streamlit==1.16.0
 chromedriver_autoinstaller
+altair==4.1.0
 
