@@ -12,9 +12,13 @@ def get_shipment_info(ship_num):
     # Construct the URL with a single shipment number
     url = f'https://www.tnt.com/express/es_es/site/herramientas-envio/seguimiento.html?searchType=con&cons={ship_num}'
 
-    # Set up the ChromeDriver (replace '/Users/albertlleidaestival/Downloads/chromedriver-mac-arm64/chromedriver' with the actual path)
-    chrome_service = ChromeService(executable_path='/Users/albertlleidaestival/Downloads/chromedriver-mac-arm64/chromedriver')
-    driver = webdriver.Chrome(executable_path='/Users/albertlleidaestival/Downloads/chromedriver-mac-arm64/chromedriver')
+    from selenium.webdriver.chrome.options import Options
+
+    # Set up Chrome options
+    chrome_options = Options()
+
+    # Initialize the ChromeDriver with options
+    driver = webdriver.Chrome(executable_path='/Users/albertlleidaestival/Downloads/chromedriver-mac-arm64/chromedriver', options=chrome_options)
 
     # Load the page
     driver.get(url)
