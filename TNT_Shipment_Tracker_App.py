@@ -179,40 +179,21 @@ def process_excel_file(uploaded_file):
     # Rearrange DataFrame in the desired order
     df = df[['Shipment Number', 'Client Reference', 'TNT Status', 'Shipment Origin Date', 'Processing Days', 'Last Update', 'Last Location', 'Last Action']]
 
-    """ Save the DataFrame to an Excel File"""
-
-    # Format file name as "TNT Track Report + datetime"
-    current_datetime = datetime.now().strftime("%d-%m-%Y %H_%M_%S")
-    excel_filename = f"TNT Track Report {current_datetime}.xlsx"
-
-    # Specify the folder path
-    folder_path = "./TNT Track Reports"
-
-    # Create the full path for saving the file
-    full_path = os.path.join(folder_path, excel_filename)
-
-    # Save the DataFrame to Excel
-    df.to_excel(full_path, index=False)
-
     """ Display the DataFrame as an Output"""
 
     # Display the updated DataFrame
     st.write("Processed Data:")
     st.write(df)
 
+    """ Download Processed Data Button"""
+
     # Download button
     st.download_button(
         label="Download Processed Data",
         data=df.to_excel(index=False, engine='openpyxl'),
-        file_name=excel_filename,
+        file_name="Processed_Data.xlsx",
         key="download_button"
     )
-
-# Define a main function
-def main():
-    uploaded_file = st.file_uploader("Upload Excel File", type=["xlsx"])
-    if uploaded_file is not None:
-        process_excel_file(uploaded_file)
 
 # Check if the script is being run as the main module
 if __name__ == "__main__":
