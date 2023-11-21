@@ -2,19 +2,28 @@
 import streamlit as st
 import pandas as pd
 from selenium import webdriver
-from selenium.webdriver.chrome.service import Service as ChromeService
+from selenium.webdriver.chrome.options import Options
 from bs4 import BeautifulSoup
 from datetime import datetime, timedelta
 import os
 
 # Function to retrieve shipment information from TNT website
-def get_shipment_info(ship_num):
-    # Construct the URL with a single shipment number
-    url = f'https://www.tnt.com/express/es_es/site/herramientas-envio/seguimiento.html?searchType=con&cons={ship_num}'
+def get_driver():
+    options = Options()
+    options.add_argument('--headless')
+    options.add_argument('--disable-gpu')
+    options.add_argument('--no-sandbox')
+    options.add_argument('--disable-dev-shm-usage')
 
-    # Set up the ChromeDriver (replace '/Users/albertlleidaestival/Downloads/chromedriver-mac-arm64/chromedriver' with the actual path)
-    chrome_service = ChromeService(executable_path='/Users/albertlleidaestival/Downloads/chromedriver-mac-arm64/chromedriver')
-    driver = webdriver.Chrome(options=chrome_service)
+    desired_capabilities = options.to_capabilities()
+    driver = webdriver.Chrome(desired_capabilities=desired_capabilities)
+    return driver
+
+def get_shipment_info(reference):
+    driver = get_driver()
+
+    # Construct the URL with a single shipment number
+    url = f'https://www.tnt.com/express/es_es/site/herramientas-envio/seguimiento.html?searchType=con&cons={reference}'
 
     # Load the page
     driver.get(url)
