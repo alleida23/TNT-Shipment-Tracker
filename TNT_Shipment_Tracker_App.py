@@ -14,7 +14,7 @@ def get_shipment_info(ship_num):
 
     # Set up the ChromeDriver (replace '/Users/albertlleidaestival/Downloads/chromedriver-mac-arm64/chromedriver' with the actual path)
     chrome_service = ChromeService(executable_path='/Users/albertlleidaestival/Downloads/chromedriver-mac-arm64/chromedriver')
-    driver = webdriver.Chrome(service=chrome_service)
+    driver = webdriver.Chrome(options=chrome_service)
 
     # Load the page
     driver.get(url)
