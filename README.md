@@ -22,16 +22,14 @@ The main steps of the project are as follows:
 
 3. **Data Processing:**
    - Apply customized functions to change data types, create columns, calculate processing days, format days, etc.
-
-4. **Data Analysis:**
    - Display the processed DataFrame.
    - Generate a bar plot of unique "Status" counts present in the DataFrame.
 
-5. **Exception Handling:**
+4. **Exception Handling:**
    - Display rows where an EXCEPTION ALERT is detected from the TNT web.
    - Build a single URL for one of these exceptional rows.
 
-6. **Inconsistency Check:**
+5. **Inconsistency Check:**
    - Check for inconsistencies between the length of the original DataFrame and the extracted information DataFrame.
    - Display rows that are present in the original but not in the extracted information.
 
@@ -63,7 +61,8 @@ Ensure that your original Excel file contains the following columns:
 
 1. Open and run the Jupyter Notebook (`TNT Shipment Tracker - Multiple Search (30).ipynb`).
 2. Ensure that the required Python packages are installed.
-3. Follow the instructions in the notebook for batch processing and web scraping.
+3. Adjust the paths to: excel_tests_file_path, chromedriver_path and folder_save_to_excel_path.
+4. Follow the instructions in the notebook for batch processing and web scraping.
 
 ## License
 
