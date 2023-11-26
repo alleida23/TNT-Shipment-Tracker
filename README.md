@@ -1,9 +1,11 @@
 # TNT Shipment Tracker - Multiple Search
 Created by Albert Lleida, November 2023
 
-This project aims to track multiple shipments from TNT using web scraping techniques. It was born out of the need of an actual company whose workers were manually tracking hundreds of shipments on the TNT tracker page every day. The process involved searching for each shipment number to determine if the client reference belonged to their company. This project is an effort to automate and streamline that process, utilizing Selenium to retrieve data in chunks of 30 to make it less time-consuming.
+This project aims to address the challenge of manually tracking hundreds of shipments from TNT faced by a company's workforce. Prior to automation, employees had to navigate the TNT tracker page daily, searching for each shipment number to identify if the client reference belonged to their company. This labor-intensive process prompted the creation of an automated solution.
 
-The project includes a Jupyter Notebook (`TNT Shipment Tracker - Multiple Search (30).ipynb`) and several Python files (`functions_extract.py`, `functions_process_df.py`, `functions_web_scraping.py`, `functions_z_extra.py`) that contain various functions used in the project.
+## Project Objective
+
+The primary goal of this project is to streamline the shipment tracking process through web scraping techniques. By leveraging Selenium, the project automates the retrieval of shipment data in chunks of 30 —the maximum allowed by the TNT tracker-, significantly reducing the time and effort required for tracking.
 
 ## Project Overview
 
