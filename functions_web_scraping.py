@@ -80,8 +80,12 @@ def scrape_shipment_data(all_shipment_divs):
                 shipment_number_element = div.select_one('pb-shipment-reference div dl dd:nth-child(2)')
                 shipment_number = shipment_number_element.get_text(strip=True) if shipment_number_element else None
 
+                # TNT Status - Original
+                #tnt_status_element = div.select_one('pb-shipment div div.__c-shipment__details sham-shipment-status-tnt > div > div.__c-shipment-status-tnt__summary > sham-step-label > span')
+                #tnt_status = tnt_status_element.get_text(strip=True) if tnt_status_element else None
+
                 # TNT Status
-                tnt_status_element = div.select_one('pb-shipment div div.__c-shipment__details sham-shipment-status-tnt > div > div.__c-shipment-status-tnt__summary > sham-step-label > span')
+                tnt_status_element = div.select_one('pb-shipment div div.__c-shipment__details sham-shipment-status-tnt > div > div.__c-shipment-status-tnt__summary > sham-step-label')
                 tnt_status = tnt_status_element.get_text(strip=True) if tnt_status_element else None
 
                 # Extract Shipment Origin Date

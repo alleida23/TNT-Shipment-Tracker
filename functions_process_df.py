@@ -226,3 +226,7 @@ def global_df_transformation(dataframe, folder_save_to_excel_path):
 # folder_save_to_excel_path = "/path/to/save/excel/files"
 # processed_df, excel_file_path = global_df_transformation(df, folder_save_to_excel_path)
 
+
+
+
+

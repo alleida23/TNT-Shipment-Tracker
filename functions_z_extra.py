@@ -66,3 +66,60 @@ def plot_horizontal_bar(processed_df):
 
 # Example usage:
 # plot_horizontal_bar(processed_df)
+
+
+
+def check_inconsistencies(excel_tests_file_path, df):
+    """
+    Check inconsistencies between the original Excel file and the extracted DataFrame.
+
+    Parameters:
+    - excel_tests_file_path (str): Path to the original Excel file.
+    - df (pd.DataFrame): Extracted DataFrame.
+
+    Returns:
+    - pd.DataFrame: DataFrame containing rows with missing references.
+    """
+    
+    import pandas as pd
+    
+    # Read the original Excel file
+    original_excel = pd.read_excel(excel_tests_file_path)
+
+    # Filter data in original_excel
+    original_excel = original_excel[(original_excel["Carrier"] == "TNT") & (original_excel["Status"] != "DELIVERED")][["LOGIS ID", "Carrier", "T&T reference", "Status"]]
+
+    # Extract missing references
+    missing_references = original_excel[~original_excel['T&T reference'].isin(df['Shipment Number'])]['T&T reference']
+
+    # Create an empty DataFrame to store rows from original_excel
+    df_missing_references = pd.DataFrame(columns=original_excel.columns)
+
+    # Iterate over each missing reference
+    for row_value in missing_references:
+        condition = original_excel['T&T reference'] == row_value
+        original_row = original_excel.loc[condition]
+
+        # Check if the row exists
+        if not original_row.empty:
+            df_missing_references = pd.concat([df_missing_references, original_row], ignore_index=True)
+            
+    # Print the comparison information
+    print(f"Original Length: {len(original_excel)}")
+    print(f"Extracted DataFrame Length: {len(df)}")
+    print(f"Difference in Length: {len(original_excel) - len(df)}")
+
+    # Display the DataFrame with missing references
+    if not df_missing_references.empty:
+        print("\nDataFrame with Missing References:")
+        #print(df_missing_references)
+    else:
+        print("\nNo Missing References Found")
+
+    return df_missing_references
+
+# Example usage
+#excel_tests_file_path = "path/to/your/excel/file.xlsx"
+#df = pd.DataFrame(...)  # Replace ... with your actual DataFrame
+#check_inconsistencies(excel_tests_file_path, df)
+
