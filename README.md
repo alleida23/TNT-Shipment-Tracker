@@ -7,6 +7,10 @@ This project aims to address the challenge of manually tracking hundreds of ship
 
 The primary goal of this project is to streamline the shipment tracking process through web scraping techniques. By leveraging Selenium, the project automates the retrieval of shipment data in chunks of 30 —the maximum allowed by the TNT tracker-, significantly reducing the time and effort required for tracking.
 
+<p align="center">
+  <img height="800" src="https://github.com/alleida23/TNT-Shipment-Tracker/assets/124719215/c1bc22e7-71c8-4e09-837d-010e64fe53b2" alt="TNT Shipment Tracker">
+</p>
+
 ## Project Overview
 
 The main steps of the project are as follows:
