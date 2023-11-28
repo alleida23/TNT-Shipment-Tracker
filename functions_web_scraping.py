@@ -1,3 +1,13 @@
+"""
+
+Functions:
+- scrape_structure_from_urls
+- scrape_shipment_data
+- review_structure_scraped
+
+"""
+
+
 def scrape_structure_from_urls(url_list, chromedriver_path):
     """
     Scrapes data from a list of URLs using Selenium and BeautifulSoup.
@@ -12,9 +22,14 @@ def scrape_structure_from_urls(url_list, chromedriver_path):
     
     from selenium import webdriver
     from bs4 import BeautifulSoup
+    from IPython.display import Markdown, display
+    import time
     
     # Empty list to store the divs retrieved
     all_shipment_divs = []
+    
+    # Start the timer
+    start_time = time.time()
 
     for url in url_list:
         # Set up ChromeOptions for headless mode
@@ -25,6 +40,10 @@ def scrape_structure_from_urls(url_list, chromedriver_path):
         chrome_service = webdriver.ChromeService(executable_path=chromedriver_path)
         driver = webdriver.Chrome(service=chrome_service, options=chrome_options)
 
+        # Set up ChromeDriver - Bernat
+        #driver = webdriver.Chrome(executable_path=chromedriver_path, options=chrome_options)
+
+        
         # Load the webpage
         driver.get(url)
         driver.implicitly_wait(8)
@@ -41,7 +60,14 @@ def scrape_structure_from_urls(url_list, chromedriver_path):
 
         # Close the browser window
         driver.quit()
+    
+    # Stop the timer
+    end_time = time.time()
 
+    # Calculate and display the elapsed time
+    elapsed_time = end_time - start_time
+    display(Markdown(f"--> Elapsed time scraping data: **{elapsed_time:.2f} seconds**"))
+    
     return all_shipment_divs
 
 # Example usage:
@@ -140,3 +166,88 @@ def scrape_shipment_data(all_shipment_divs):
 # Example usage:
 # df = scrape_shipment_data(all_shipment_divs)
 # df.head()
+
+
+
+
+
+
+
+def review_structure_scraped(unique_references, all_shipment_divs, url_list, chromedriver_path):
+    """
+    Review the structure of scraped data.
+
+    Args:
+    - unique_references (list): List of unique references to check.
+    - all_shipment_divs (list): List of BeautifulSoup objects representing scraped data.
+    - url_list (list): List of URLs to scrape.
+    - chromedriver_path (str): Path to the ChromeDriver executable.
+
+    Returns:
+    None
+    """
+    
+    from IPython.display import Markdown, display
+    import time
+    
+    # Start the timer
+    start_time = time.time()
+
+    # Count the expected shipment numbers
+    len_unique_ref = len(unique_references)
+
+    # Print the expected number of shipments
+    display(Markdown(f"--> Expected number of shipments: **{len_unique_ref}**"))
+
+    # Display a message indicating that the extracted data is being reviewed or scraped
+    display(Markdown("--> Reviewing extracted data..."))
+
+    # Set the maximum number of attempts for scraping
+    max_attempts = 5
+    # Initialize the current attempt counter
+    current_attempt = 1
+
+    # Initialize found_shipments outside the loop
+    found_shipments = 0
+
+    # Continue scraping until all unique references are found in the shipment data or max attempts are reached
+    while current_attempt <= max_attempts:
+        # Count the number of found shipment numbers
+        found_shipments = sum(any(str(ship_num) in str(div) for div in all_shipment_divs) for ship_num in unique_references)
+
+        # Print a message indicating the attempt status
+        if found_shipments == len_unique_ref:
+            display(Markdown(f"--> Attempt {current_attempt} Succeeded: Found {found_shipments} out of {len_unique_ref} shipments."))
+            break  # Exit the loop if all unique references are found
+        else:
+            display(Markdown(f"--> Attempt {current_attempt} Unsucceeded: Found {found_shipments} out of {len_unique_ref} shipments.\n**Scraping TNT web again...**"))
+
+        # Scraping data again
+        all_shipment_divs = scrape_structure_from_urls(url_list, chromedriver_path)
+
+        # Increment the attempt counter
+        current_attempt += 1
+    
+    
+    
+    # Check if all unique references are present in the scraped data
+    if found_shipments == len_unique_ref:
+        display(Markdown("**All shipment numbers in your Excel file are present in the scraped data.**"))
+        # Continue with the next stage of your code
+    else:
+        display(Markdown("**Unsuccessful scrap. Review code, possible errors on the dataframe, or run it again.**"))
+    
+    # Stop the timer
+    end_time = time.time()
+
+    # Calculate and display the elapsed time
+    elapsed_time = end_time - start_time
+    display(Markdown(f"--> Elapsed time reviewing scraped data: **{elapsed_time:.2f} seconds**"))
+    
+    # Return the updated all_shipment_divs
+    return all_shipment_divs
+
+
+# Example usage:
+# all_shipment_divs = review_structure_scraped(unique_references, all_shipment_divs, url_list, chromedriver_path)
+

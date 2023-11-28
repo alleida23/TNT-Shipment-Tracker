@@ -1,5 +1,11 @@
-import pandas as pd
-from IPython.display import display, Markdown
+"""
+Functions:
+- extract_and_create_urls
+
+"""
+
+
+
 
 def extract_and_create_urls(excel_tests_file_path):
     """
@@ -12,6 +18,9 @@ def extract_and_create_urls(excel_tests_file_path):
     Returns:
     - list: List of URLs to be scraped.
     """
+    import pandas as pd
+    from IPython.display import display, Markdown
+    
     # Read and extract shipment data from the Excel file
     shipment_data = pd.read_excel(excel_tests_file_path)
 
@@ -30,7 +39,7 @@ def extract_and_create_urls(excel_tests_file_path):
     unique_references = set(shipment_to_query['T&T reference'])
 
     # Print
-    display(Markdown(f"In your Excel file there are **{len(unique_references)} UNIQUE** shipment numbers (**{shipment_in_transit} IN TRANSIT and {shipment_exception} EXCEPTION**). "))
+    display(Markdown(f" --> In your Excel file there are **{len(unique_references)} unique shipment numbers** ({shipment_in_transit} 'In Transit' and {shipment_exception} 'Exception'). "))
 
     # Convert the set to a list
     unique_references_list = list(unique_references)
@@ -42,7 +51,7 @@ def extract_and_create_urls(excel_tests_file_path):
     chunked_references = [sorted_references[i:i + 30] for i in range(0, len(sorted_references), 30)]
     
     # Print
-    display(Markdown(f"Total **up-to-30-shipm-num groups** to be consulted: **{len(chunked_references)}**"))
+    #display(Markdown(f"Number of **URL** (up-to-30 shipment numbers groups) to be consulted: **{len(chunked_references)}**"))
 
     # Create an empty list to store the URL
     url_list = []
@@ -53,13 +62,13 @@ def extract_and_create_urls(excel_tests_file_path):
         url_list.append(url)
     
     # Linkable URLs to manually check them if needed
-    display(Markdown(f"**Linkable URLs**: "))
+    display(Markdown(f"--> Chunked URLs to be consulted: **{len(chunked_references)}** "))
     
-    for i, url in enumerate(url_list, 1):
-        display(f"{i}. {url}\n")
+    #for i, url in enumerate(url_list, 1):
+    #    display(f"{i}. {url}")
     
     # Return the list of URLs
-    return url_list
+    return url_list, unique_references
 
 # Example usage:
 # excel_tests_file_path = "./Shipment_Data/Testsinmacro.xlsx"

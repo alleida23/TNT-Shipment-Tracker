@@ -1,3 +1,16 @@
+"""
+
+Functions:
+- convert_shipment_origin_date
+- process_last_update_column
+- calculate_processing_days
+- format_dates_and_processing_days
+- rearrange_columns_and_save_to_excel
+- global_df_transformation
+
+"""
+
+
 def convert_shipment_origin_date(dataframe):
     """
     Convert 'Shipment Origin Date' column to the desired format.
@@ -90,14 +103,23 @@ def calculate_processing_days(dataframe):
 
     # Iterate through each row
     for index, row in dataframe.iterrows():
-        if row['TNT Status'] != "Entregado" and row['TNT Exception Notification'] != "EXCEPTION ALERT":
-            # Calculate processing time for non-delivered shipments
+        if row['TNT Status'] == "Entregado":
+            # Calculate processing time for delivered shipments
+            processing_time = pd.to_datetime(row['Last Update']) - row['Shipment Origin Date']
+        else:
+            # Calculate processing time using current date for other cases
             current_date = datetime.now().replace(microsecond=0)
             processing_time = current_date - row['Shipment Origin Date']
-        else:
-            # For delivered shipments, use 'Last Update'
-            processing_time = pd.to_datetime(row['Last Update']) - row['Shipment Origin Date']
+        
+        #if row['TNT Status'] != "Entregado" and row['TNT Exception Notification'] != "EXCEPTION ALERT":
+            # Calculate processing time for non-delivered shipments
+         #   current_date = datetime.now().replace(microsecond=0)
+         #   processing_time = current_date - row['Shipment Origin Date']
+        #else:
+        #    # For delivered shipments, use 'Last Update'
+        #    processing_time = pd.to_datetime(row['Last Update']) - row['Shipment Origin Date']
 
+        
         # Format processing time to display only days, months, and years
         days, seconds = processing_time.days, processing_time.seconds
         formatted_processing_time = timedelta(days=days, seconds=seconds)
@@ -175,7 +197,7 @@ def rearrange_columns_and_save_to_excel(dataframe, folder_save_to_excel_path):
     dataframe.to_excel(full_path, index=False)
     
     # Print path
-    print(f"Excel file saved at: {full_path}")
+    # print(f"Excel file saved at: {full_path}")
 
     return dataframe, full_path
 
@@ -202,6 +224,7 @@ def global_df_transformation(dataframe, folder_save_to_excel_path):
     import pandas as pd
     from datetime import datetime, timedelta
     import os
+    from IPython.display import display, Markdown
 
     # Function 1: Convert 'Shipment Origin Date'
     dataframe = convert_shipment_origin_date(dataframe)
@@ -218,7 +241,7 @@ def global_df_transformation(dataframe, folder_save_to_excel_path):
     # Function 5: Rearrange columns and save to Excel
     processed_df, excel_file_path = rearrange_columns_and_save_to_excel(dataframe, folder_save_to_excel_path)
 
-    print(f"Global processing completed. Excel file saved at: {excel_file_path}")
+    display(Markdown(f"--> Excel file saved at: {excel_file_path}"))
 
     return processed_df, excel_file_path
 
